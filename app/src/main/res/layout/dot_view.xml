@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:context=".MainAdActivity"
+    >
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerInParent="true"
+        >
+        <View
+            android:id="@+id/dot1View"
+            android:layout_width="6dp"
+            android:layout_height="6dp"
+            android:background="@drawable/ad_dot_circle_selected"
+            />
+
+        <View
+            android:id="@+id/dot2View"
+            android:layout_width="6dp"
+            android:layout_height="6dp"
+            android:background="@drawable/ad_dot_circle_unselected"
+            android:layout_marginStart="8dp"
+            />
+
+        <View
+            android:id="@+id/dot3View"
+            android:layout_width="6dp"
+            android:layout_height="6dp"
+            android:background="@drawable/ad_dot_circle_unselected"
+            android:layout_marginStart="8dp"
+            />
+
+        <View
+            android:id="@+id/dot4View"
+            android:layout_width="6dp"
+            android:layout_height="6dp"
+            android:background="@drawable/ad_dot_circle_unselected"
+            android:layout_marginStart="8dp"
+            />
+        <View
+            android:id="@+id/dot5View"
+            android:layout_width="6dp"
+            android:layout_height="6dp"
+            android:background="@drawable/ad_dot_circle_unselected"
+            android:layout_marginStart="8dp"
+            />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</RelativeLayout>

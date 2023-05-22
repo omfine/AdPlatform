@@ -1,0 +1,83 @@
+广告接入
+
+1，初始化
+	/**
+	 * 广告sdk的初始化操作
+	 * @param context
+	 * @param appId
+	 * @param appType 1，用户端 2，配送端
+	 */
+	QwQerAdHelper.init(this , "5001121" , 1);
+
+2,刷新网络相关参数
+    /**
+     * 刷新token
+     * @param token
+     */
+	RetrofitParamsHelper.getInstance().freshToken(token);
+	    /**
+     * 刷新baseUrl,放在Retrofit里的
+     * @param baseUrl
+     */
+	RetrofitParamsHelper.getInstance().freshBaseUrl("https://www.baidu.com");
+	
+3，调用.
+	1),banner广告
+	
+		<com.qwqer.adplatform.ad.BannerAdView
+		android:id="@+id/bannerAdView"
+		android:layout_width="match_parent"
+		android:layout_height="120dp"
+		/>
+		
+	   /**
+		 * 加载广告
+		 * @param advertPosition 广告位置，1-开屏广告，2-首页广告（banner），3-我的钱包，4-提现，5-提现成功，6-余额明细，7-保证金列表，8-保证金明细，9-配送统计,10-首页广告（弹窗）
+		 * @param showFrom 广告获取来源：1-每次打开app，2-每次打开点击首页，advertPosition = 10 必填
+		 * @param imageCorner 显示图片的角度
+		 * @param codeId 头条广告位的ID
+		 */
+		bannerAdView.loadAd(1 , 1 , 0 , "901121423");
+		
+	2),插屏广告
+		
+		/**
+		 * 插屏广告。
+		 * @param activity
+		 * @param advertPosition 广告位置，1-开屏广告，2-首页广告（banner），3-我的钱包，4-提现，5-提现成功，6-余额明细，7-保证金列表，8-保证金明细，9-配送统计,10-首页广告（弹窗）
+		 * @param showFrom 广告获取来源：1-每次打开app，2-每次打开点击首页，advertPosition = 10 必填
+		 * @param codeId 头条广告位的ID
+		 */
+		AdHelper.showInsertScreenAd(MainAdActivity.this , 1 , 2, "945509702");
+
+        /**
+         * 插屏广告。
+         * @param activity
+         * @param advertPosition 广告位置，1-开屏广告，2-首页广告（banner），3-我的钱包，4-提现，5-提现成功，6-余额明细，7-保证金列表，8-保证金明细，9-配送统计,10-首页广告（弹窗）
+         * @param showFrom 广告获取来源：1-每次打开app，2-每次打开点击首页，advertPosition = 10 必填
+         * @param codeId 头条广告位的ID
+         * @param onAdListener 广告弹出窗口，显示和关闭的回调
+         */
+        AdHelper.showInsertScreenAd(MainAdActivity.this , 1 , 2, "945509702" , onAdListener);
+
+	3),开屏广告
+		
+	    <com.qwqer.adplatform.ad.SplashAdView
+        android:id="@+id/splashAdView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+		
+		/**
+		 * 加载广告
+		 * @param advertPosition 广告位置，1-开屏广告，2-首页广告（banner），3-我的钱包，4-提现，5-提现成功，6-余额明细，7-保证金列表，8-保证金明细，9-配送统计,10-首页广告（弹窗）
+		 * @param showFrom 广告获取来源：1-每次打开app，2-每次打开点击首页，advertPosition = 10 必填
+		 * @param codeId 头条广告位的ID
+		 * @param onAdListener 跳转时用
+		 */
+		splashAdView.loadAd(1 , 1 , "801121648" , new OnAdListener(){
+            @Override
+            public void onJump() {
+                finish();
+            }
+        });
