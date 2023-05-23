@@ -7,6 +7,9 @@ import android.os.Looper;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
+
+import androidx.core.content.ContextCompat;
+
 import com.kc.openset.OSETBanner;
 import com.kc.openset.OSETListener;
 import com.qwqer.adplatform.R;
@@ -195,7 +198,7 @@ public class BannerAdView extends BaseView {
     private void showAdSetBanner(String adId){
         setVisibility(View.VISIBLE);
         bannerAdContainerView.removeAllViews();
-
+        bannerAdContainerView.setBackgroundColor(ContextCompat.getColor(context , R.color.ad_colorTransparent));
         new OSETBanner().show((Activity) context, adId, bannerAdContainerView, new OSETListener() {
             @Override
             public void onClick() {
@@ -212,6 +215,8 @@ public class BannerAdView extends BaseView {
 
             @Override
             public void onShow() {
+                setVisibility(View.VISIBLE);
+                bannerAdContainerView.setBackgroundColor(ContextCompat.getColor(context , R.color.white));
                 AdLog.e("==========OSETBanner=====onShow=");
             }
 

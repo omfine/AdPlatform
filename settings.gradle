@@ -14,6 +14,8 @@ dependencyResolutionManagement {
             url 'https://artifact.bytedance.com/repository/pangle'
         }
         maven { url "https://jitpack.io" }
+
+        maven { url "http://127.0.0.1:8081/repository/maven-releases" }
     }
 }
 rootProject.name = "AdPlatform"
