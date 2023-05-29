@@ -15,7 +15,9 @@ dependencyResolutionManagement {
         }
         maven { url "https://jitpack.io" }
 
-        maven { url "http://127.0.0.1:8081/repository/maven-releases" }
+        maven {
+            allowInsecureProtocol = true
+            url "http://172.16.1.41:8081/repository/maven-releases" }
     }
 }
 rootProject.name = "AdPlatform"
