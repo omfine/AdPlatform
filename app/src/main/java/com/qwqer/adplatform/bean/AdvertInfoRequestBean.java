@@ -1,5 +1,7 @@
 package com.qwqer.adplatform.bean;
 
+import android.os.Build;
+
 /**
  * 广告接口请求接口。
  * @author E
@@ -10,7 +12,15 @@ public class AdvertInfoRequestBean {
     private int advertPosition = 0;
     //广告获取来源：1-每次打开app，2-每次打开点击首页，advertPosition = 10 必填
     private int showFrom = 0;
-
+    /**
+     * 手机品牌
+     */
+    private String brand;
+    /**
+     * APK版本号.
+     * @return
+     */
+    private String version;
 
     public int getAdvertPosition() {
         return advertPosition;
@@ -26,5 +36,21 @@ public class AdvertInfoRequestBean {
 
     public void setShowFrom(int showFrom) {
         this.showFrom = showFrom;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
     }
 }

@@ -1,9 +1,12 @@
 package com.qwqer.adplatform.net;
 
+import android.os.Build;
 import com.qwqer.adplatform.bean.AdvertInfoRequestBean;
 import com.qwqer.adplatform.bean.AdvertInfoResultBean;
+import com.qwqer.adplatform.init.QwQerAdHelper;
 import com.qwqer.adplatform.net.base.OnRequestCallBackListener;
 import com.qwqer.adplatform.net.base.RetrofitHelper;
+import com.qwqer.adplatform.utils.AdUtils;
 import com.qwqer.adplatform.utils.QwQerAdConfig;
 /**
  * 相关接口类。
@@ -60,6 +63,10 @@ public class AdNetHelper extends RetrofitHelper {
         AdvertInfoRequestBean advertInfoRequestBean = new AdvertInfoRequestBean();
         advertInfoRequestBean.setAdvertPosition(advertPosition);
         advertInfoRequestBean.setShowFrom(showFrom);
+
+        advertInfoRequestBean.setBrand(Build.BRAND);
+        advertInfoRequestBean.setVersion(AdUtils.getVersionName(QwQerAdHelper.getContext()));
+
         advertInfo(advertInfoRequestBean , onRequestCallBackListener);
     }
 
@@ -73,6 +80,10 @@ public class AdNetHelper extends RetrofitHelper {
         AdvertInfoRequestBean advertInfoRequestBean = new AdvertInfoRequestBean();
         advertInfoRequestBean.setAdvertPosition(advertPosition);
         advertInfoRequestBean.setShowFrom(showFrom);
+
+        advertInfoRequestBean.setBrand(Build.BRAND);
+        advertInfoRequestBean.setVersion(AdUtils.getVersionName(QwQerAdHelper.getContext()));
+
         advertInfoSplash(advertInfoRequestBean , onRequestCallBackListener);
     }
 
