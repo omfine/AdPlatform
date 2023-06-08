@@ -28,7 +28,13 @@ public class QwQerAdHelper {
         return mContext;
     }
 
+    public static String getClientFlag(){
+        return mClientFlag;
+    }
+
     private static Context mContext;
+
+    private static String mClientFlag;
 
     /**
      * 接入网盟广告sdk的初始化操作，详情见接入文档和穿山甲平台说明
@@ -36,8 +42,9 @@ public class QwQerAdHelper {
      * @param appId
      * @param appType 1，用户端 2，配送端
      */
-    public static void init(Application context , String appId , int appType) {
+    public static void init(Application context , String appId , int appType , String clientFlag) {
         mContext = context;
+        mClientFlag = clientFlag;
         QwQerAdConfig.appType = appType;
 /*
         if (TTAdSdk.isInitSuccess()){

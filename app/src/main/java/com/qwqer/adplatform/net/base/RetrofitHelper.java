@@ -2,7 +2,11 @@ package com.qwqer.adplatform.net.base;
 
 import android.text.TextUtils;
 import android.util.Log;
+
+import com.qwqer.adplatform.init.QwQerAdHelper;
 import com.qwqer.adplatform.utils.AdLog;
+import com.qwqer.adplatform.utils.QwQerAdConfig;
+
 import java.security.KeyStore;
 import java.util.concurrent.TimeUnit;
 import javax.net.ssl.SSLContext;
@@ -74,6 +78,7 @@ public class RetrofitHelper {
                 Request.Builder builder1 =request.newBuilder();
                 //添加请求头
                 builder1.addHeader("token" , token);
+                builder1.addHeader("Gxd-Client" , QwQerAdHelper.getClientFlag());
                 return chain.proceed(builder1.build());
             };
             builder.addInterceptor(headerInterceptor);

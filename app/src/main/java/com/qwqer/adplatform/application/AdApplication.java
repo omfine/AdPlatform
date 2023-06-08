@@ -14,7 +14,7 @@ public class AdApplication extends Application {
         //5315280
         //E6097975B89E83D6
         //F3984C8E81F2CF70
-        QwQerAdHelper.init(this , "F3984C8E81F2CF70" , 1);
+        QwQerAdHelper.init(this , "F3984C8E81F2CF70" , 1 , "CUSTOMER_APP_CLIENT");
     }
 
 }
