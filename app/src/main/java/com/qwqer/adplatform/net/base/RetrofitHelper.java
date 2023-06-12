@@ -82,6 +82,16 @@ public class RetrofitHelper {
                 return chain.proceed(builder1.build());
             };
             builder.addInterceptor(headerInterceptor);
+        }else {
+            Interceptor headerInterceptor = chain -> {
+                Request request = chain.request();
+                Request.Builder builder1 =request.newBuilder();
+                //添加请求头
+//                builder1.addHeader("token" , token);
+                builder1.addHeader("Gxd-Client" , QwQerAdHelper.getClientFlag());
+                return chain.proceed(builder1.build());
+            };
+            builder.addInterceptor(headerInterceptor);
         }
 
         if (TextUtils.isEmpty(baseUrl)){
