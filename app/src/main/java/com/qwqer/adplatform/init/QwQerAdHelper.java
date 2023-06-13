@@ -29,6 +29,9 @@ public class QwQerAdHelper {
     }
 
     public static String getClientFlag(){
+        if (null == mClientFlag){
+            return "";
+        }
         return mClientFlag;
     }
 
