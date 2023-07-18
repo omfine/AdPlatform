@@ -199,7 +199,7 @@ public class BannerAdView extends BaseView {
         setVisibility(View.VISIBLE);
         bannerAdContainerView.removeAllViews();
         bannerAdContainerView.setBackgroundColor(ContextCompat.getColor(context , R.color.ad_colorTransparent));
-        new OSETBanner().show((Activity) context, adId, bannerAdContainerView, new OSETListener() {
+        OSETBanner.getInstance().show((Activity) context, adId, bannerAdContainerView, new OSETListener() {
             @Override
             public void onClick() {
                 AdLog.e("==========OSETBanner=====onClick=");
