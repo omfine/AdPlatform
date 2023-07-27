@@ -107,17 +107,17 @@ dependencies {
 //    implementation files('../app/libs/mediation_ad_sdk_3.7.0.0.aar')
 
 
-    implementation("com.qwqer:baidu:1.0.2@aar")
-    implementation("com.qwqer:gdt:1.0.2@aar")
-    implementation("com.qwqer:ks:1.0.2@aar")
-    implementation("com.qwqer:mediation:1.0.2@aar")
-    implementation("com.qwqer:msc:1.0.2@jar")
-    implementation("com.qwqer:oaid:1.0.2@aar")
-    implementation("com.qwqer:open_ad:1.0.2@aar")
-    implementation("com.qwqer:openset:1.0.2@aar")
-    implementation("com.qwqer:pangle:1.0.2@aar")
-    implementation("com.qwqer:wind:1.0.2@aar")
-    implementation("com.qwqer:wind_common:1.0.2@aar")
+    implementation("com.qwqer:baidu:1.0.3@aar")
+    implementation("com.qwqer:gdt:1.0.3@aar")
+    implementation("com.qwqer:ks:1.0.3@aar")
+    implementation("com.qwqer:mediation:1.0.3@aar")
+    implementation("com.qwqer:msc:1.0.3@jar")
+    implementation("com.qwqer:oaid:1.0.3@aar")
+    implementation("com.qwqer:open_ad:1.0.3@aar")
+    implementation("com.qwqer:openset:1.0.3@aar")
+    implementation("com.qwqer:pangle:1.0.3@aar")
+    implementation("com.qwqer:wind:1.0.3@aar")
+    implementation("com.qwqer:wind_common:1.0.3@aar")
 
 
 }
