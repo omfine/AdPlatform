@@ -42,11 +42,12 @@ public class RetrofitHelper {
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor(message -> Log.i("ad_log" , message));
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        builder.addInterceptor(httpLoggingInterceptor)
-                .connectTimeout(5, TimeUnit.SECONDS)
+        builder.connectTimeout(5, TimeUnit.SECONDS)
                 .writeTimeout(5, TimeUnit.SECONDS)
                 .readTimeout(5, TimeUnit.SECONDS)
-                .retryOnConnectionFailure(true) ;
+                .retryOnConnectionFailure(true)
+//                .addInterceptor(httpLoggingInterceptor)
+        ;
 
 
         //支持https 正式上线 这里需要处理，增加安全验证
@@ -93,6 +94,8 @@ public class RetrofitHelper {
             };
             builder.addInterceptor(headerInterceptor);
         }
+        //
+        builder.addInterceptor(httpLoggingInterceptor);
 
         if (TextUtils.isEmpty(baseUrl)){
             return;
