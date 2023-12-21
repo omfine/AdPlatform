@@ -1,17 +1,14 @@
 package com.qwqer.adplatform.ad;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
-
 import androidx.core.content.ContextCompat;
-
-import com.kc.openset.OSETBanner;
-import com.kc.openset.OSETListener;
+import com.beizi.fusion.BannerAd;
+import com.beizi.fusion.BannerAdListener;
 import com.qwqer.adplatform.R;
 import com.qwqer.adplatform.ad.self.SelfBannerAdView;
 import com.qwqer.adplatform.bean.AdvertInfoResultBean;
@@ -22,6 +19,7 @@ import com.qwqer.adplatform.utils.ActivityUtils;
 import com.qwqer.adplatform.utils.AdLog;
 import com.qwqer.adplatform.utils.AdUtils;
 import com.qwqer.adplatform.utils.QwQerAdConfig;
+import com.qwqer.adplatform.utils.Utils;
 import com.qwqer.adplatform.view.BaseView;
 /**
  * Banner广告。
@@ -191,6 +189,8 @@ public class BannerAdView extends BaseView {
         });
     }
 
+    private BannerAd bannerAd;
+
     /**
      * 接入的Adset集合广告，展示banner.
      * banner广告位id：107EB50EDFE65EA3306C8318FD57D0B3
@@ -199,34 +199,38 @@ public class BannerAdView extends BaseView {
         setVisibility(View.VISIBLE);
         bannerAdContainerView.removeAllViews();
         bannerAdContainerView.setBackgroundColor(ContextCompat.getColor(context , R.color.ad_colorTransparent));
-        OSETBanner.getInstance().show((Activity) context, adId, bannerAdContainerView, new OSETListener() {
+        if (null != bannerAd){
+            bannerAd.destroy();
+            bannerAd = null;
+        }
+        bannerAd = new BannerAd(context, adId, new BannerAdListener() {
             @Override
-            public void onClick() {
-                AdLog.e("==========OSETBanner=====onClick=");
-            }
-
-            @Override
-            public void onClose() {
-                AdLog.e("==========OSETBanner=====onClose=");
-
+            public void onAdFailed(int i) {
                 setVisibility(View.GONE);
                 bannerAdContainerView.removeAllViews();
             }
-
             @Override
-            public void onShow() {
+            public void onAdLoaded() {
+
+            }
+            @Override
+            public void onAdShown() {
                 setVisibility(View.VISIBLE);
                 bannerAdContainerView.setBackgroundColor(ContextCompat.getColor(context , R.color.white));
-                AdLog.e("==========OSETBanner=====onShow=");
             }
-
             @Override
-            public void onError(String s, String s1) {
+            public void onAdClosed() {
                 setVisibility(View.GONE);
                 bannerAdContainerView.removeAllViews();
-                AdLog.e("==========OSETBanner=====onError=s: " + s + "   s1: " + s1);
             }
-        });
+            @Override
+            public void onAdClick() {
+
+            }
+        }, 5000L);
+
+        float screenWidth = Utils.getScreenWidthDp(context);
+        bannerAd.loadAd(screenWidth , (screenWidth / 6.4f) , bannerAdContainerView);
     }
 
 

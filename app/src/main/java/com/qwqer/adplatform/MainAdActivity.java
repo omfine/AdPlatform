@@ -48,7 +48,7 @@ public class MainAdActivity extends AppCompatActivity {
             //banner广告 949191939
             //107EB50EDFE65EA3306C8318FD57D0B3
             //107EB50EDFE65EA3306C8318FD57D0B3
-            bannerAdView.loadAd(2 , 1 , 0 , "3C3BC11E3DE0B3B67F86A890587D1DEA" , false);
+            bannerAdView.loadAd(2 , 1 , 0 , "103223" , false);
         });
 
         setTokenBtn.setOnClickListener(view -> {
@@ -60,7 +60,7 @@ public class MainAdActivity extends AppCompatActivity {
         insertScreenBtn.setOnClickListener(view -> {
             //插屏广告 949196274
             //1D273967F51868AF2C4E080D496D06D0
-            AdHelper.showInsertScreenAd(MainAdActivity.this , 10 , 1, "1D273967F51868AF2C4E080D496D06D0");
+            AdHelper.showInsertScreenAd(MainAdActivity.this , 10 , 1, "103460");
 
         });
 

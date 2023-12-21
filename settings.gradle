@@ -20,5 +20,5 @@ dependencyResolutionManagement {
             url "http://172.16.1.41:8081/repository/maven-releases" }
     }
 }
-rootProject.name = "AdPlatform"
+rootProject.name = "AdPlatform_蓓姿广告"
 include ':app'

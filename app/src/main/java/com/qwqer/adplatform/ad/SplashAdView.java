@@ -1,27 +1,20 @@
 package com.qwqer.adplatform.ad;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.View;
 import android.widget.LinearLayout;
-import com.bytedance.sdk.openadsdk.AdSlot;
-import com.bytedance.sdk.openadsdk.TTAdNative;
-import com.bytedance.sdk.openadsdk.TTSplashAd;
-import com.kc.openset.OSETListener;
-import com.kc.openset.OSETSplash;
+import com.beizi.fusion.AdListener;
+import com.beizi.fusion.SplashAd;
 import com.qwqer.adplatform.R;
 import com.qwqer.adplatform.ad.self.SelfSplashAdView;
 import com.qwqer.adplatform.bean.AdvertInfoResultBean;
-import com.qwqer.adplatform.init.QwQerAdHelper;
 import com.qwqer.adplatform.listeners.OnAdListener;
 import com.qwqer.adplatform.net.AdNetHelper;
 import com.qwqer.adplatform.net.base.OnRequestCallBackListener;
 import com.qwqer.adplatform.utils.ActivityUtils;
 import com.qwqer.adplatform.utils.AdLog;
 import com.qwqer.adplatform.utils.QwQerAdConfig;
+import com.qwqer.adplatform.utils.Utils;
 import com.qwqer.adplatform.view.BaseView;
 /**
  * 开屏广告。
@@ -116,6 +109,55 @@ public class SplashAdView extends BaseView {
      */
     private void showAdSetSplashAd(String adId){
         splashAdContainerView.removeAllViews();
+
+        loadBeiZiAds(adId);
+    }
+
+    private SplashAd splashAd = null;
+
+    private void loadBeiZiAds(String adId){
+        splashAd = new SplashAd(context, null, adId, new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                AdLog.e("qwqer_ad=====开屏广告========onAdLoaded====");
+                if (null != splashAd){
+                    splashAdContainerView.removeAllViews();
+                    splashAd.show(splashAdContainerView);
+                }
+            }
+            @Override
+            public void onAdShown() {
+                AdLog.e("qwqer_ad=====开屏广告========onAdShown====");
+            }
+            @Override
+            public void onAdFailedToLoad(int code) {
+                AdLog.e("qwqer_ad=====开屏广告========onAdFailedToLoad====code: " + code);
+                if (null != onAdListener){
+                    onAdListener.onJump();
+                }
+            }
+            @Override
+            public void onAdClosed() {
+                AdLog.e("qwqer_ad=====开屏广告========onAdClosed====");
+                if (null != onAdListener){
+                    onAdListener.onJump();
+                }
+            }
+            @Override
+            public void onAdTick(long l) {
+                AdLog.e("qwqer_ad=====开屏广告========onAdTick====");
+            }
+            @Override
+            public void onAdClicked() {
+                AdLog.e("qwqer_ad=====开屏广告========onAdClicked====");
+            }
+        } , 5000);
+
+        splashAd.loadAd((int) Utils.getScreenWidthDp(context), (int) Utils.getScreenHeightDp(context));
+    }
+
+
+/*    private void loadAdsetAds(){
         OSETSplash.getInstance().show((Activity) context, splashAdContainerView, adId, new OSETListener() {
             @Override
             public void onClick() {
@@ -140,7 +182,8 @@ public class SplashAdView extends BaseView {
                 }
             }
         });
-    }
+    }*/
+
 
 /*    private void loadSplashAd(String codeId){
         if (ActivityUtils.isActivityNotAvailable(context)){
@@ -235,15 +278,11 @@ public class SplashAdView extends BaseView {
     }*/
 
 
-
-
-
-
-
-
-
-
-
-
-
+    @Override
+    protected void onDetachedFromWindow() {
+        if (null != splashAd){
+            splashAd.cancel(context);
+        }
+        super.onDetachedFromWindow();
+    }
 }

@@ -5,15 +5,10 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Build;
 import android.webkit.WebView;
-import com.bytedance.sdk.openadsdk.TTAdConfig;
-import com.bytedance.sdk.openadsdk.TTAdConstant;
+import com.beizi.fusion.BeiZis;
 import com.bytedance.sdk.openadsdk.TTAdManager;
 import com.bytedance.sdk.openadsdk.TTAdSdk;
-import com.kc.openset.OSETSDK;
-import com.kc.openset.listener.OSETInitListener;
-import com.qwqer.adplatform.utils.AdLog;
 import com.qwqer.adplatform.utils.QwQerAdConfig;
-
 /**
  * 广告初始化。
  * @author E
@@ -49,22 +44,6 @@ public class QwQerAdHelper {
         mContext = context;
         mClientFlag = clientFlag;
         QwQerAdConfig.appType = appType;
-/*
-        if (TTAdSdk.isInitSuccess()){
-            return;
-        }
-        TTAdSdk.init(context, buildConfig(context , appId), new TTAdSdk.InitCallback() {
-            @Override
-            public void success() {
-                AdLog.i("init success: " + TTAdSdk.isInitSuccess());
-            }
-
-            @Override
-            public void fail(int code, String msg) {
-                AdLog.i("init fail:  code = " + code + " msg = " + msg);
-            }
-        });
-*/
 
         initAdSet(context , appId);
     }
@@ -82,38 +61,11 @@ public class QwQerAdHelper {
                 e.printStackTrace();
             }
         }
-//        String APPKEY = "E6097975B89E83D6";
-//        OSETSDK.getInstance().setUserId("aaaa");
-        OSETSDK.getInstance().init(context, appKey, new OSETInitListener() {
-            @Override
-            public void onError(String s) {
-                AdLog.e("=========initAdSet====onError======:: " + s);
-            }
-            @Override
-            public void onSuccess() {
-                AdLog.e("=========initAdSet====onSuccess======成功 ");
-            }
-        });
+
+        BeiZis.init(context , appKey);
 
     }
 
 
-    private static TTAdConfig buildConfig(Context context , String appId) {
-        return new TTAdConfig.Builder()
-                .appId(appId)
-                .useTextureView(true) //使用TextureView控件播放视频,默认为SurfaceView,当有SurfaceView冲突的场景，可以使用TextureView
-                .allowShowNotify(true) //是否允许sdk展示通知栏提示
-//                .debug(true) //测试阶段打开，可以通过日志排查问题，上线时去除该调用
-
-                .directDownloadNetworkType(TTAdConstant.NETWORK_STATE_WIFI,
-                        TTAdConstant.NETWORK_STATE_2G,
-                        TTAdConstant.NETWORK_STATE_3G,
-                        TTAdConstant.NETWORK_STATE_4G,
-                        TTAdConstant.NETWORK_STATE_5G,
-                        TTAdConstant.NETWORK_STATE_MOBILE) //允许直接下载的网络状态集合
-                .supportMultiProcess(false)//是否支持多进程
-                .needClearTaskReset()
-                .build();
-    }
 
 }

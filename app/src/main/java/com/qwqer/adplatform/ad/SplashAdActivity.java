@@ -24,7 +24,7 @@ public class SplashAdActivity extends AppCompatActivity {
         //887838278
         //7D5239D8D88EBF9B6D317912EDAC6439
         //8F934E519D26C5CD24820FC5BA3E0E4D
-        splashAdView.loadAd(1 , 1 , "8F934E519D26C5CD24820FC5BA3E0E4D" , new OnAdListener(){
+        splashAdView.loadAd(1 , 1 , "103222" , new OnAdListener(){
             @Override
             public void onJump() {
                 finish();

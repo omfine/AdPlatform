@@ -1,8 +1,8 @@
 package com.qwqer.adplatform.ad;
 
 import android.app.Activity;
-import com.kc.openset.OSETListener;
-import com.kc.openset.ad.OSETInsertCache;
+import com.beizi.fusion.InterstitialAd;
+import com.beizi.fusion.InterstitialAdListener;
 import com.qwqer.adplatform.bean.AdvertInfoBean;
 import com.qwqer.adplatform.bean.AdvertInfoResultBean;
 import com.qwqer.adplatform.dialog.SelfInsertScreenAdDialog;
@@ -103,6 +103,8 @@ public class AdHelper {
         });
     }
 
+    private static InterstitialAd interstitialAd = null;
+
     /**
      * 显示AdSet集合广告的插屏广告。
      * 注意： 1、startLoad和destroy方法需要在同一个Activity调用，尽量在长生命周期的Activiy调用，因为频繁的destroy会影响广告的ecpm
@@ -110,40 +112,41 @@ public class AdHelper {
      */
     private static void showAdSetInsertScreenAd(Activity activity , String adId , OnAdListener onAdListener){
         //在首页中OnCreate调用以下代码可以开始加载广告并缓存
-        OSETInsertCache.getInstance()
-                .setContext(activity)
-                .setPosId(adId)
-                .startLoad();
+        interstitialAd = new InterstitialAd(activity, adId, new InterstitialAdListener() {
+            @Override
+            public void onAdFailed(int code) {
+                AdLog.e("qwqer_ad======插屏广告========onAdFailed=======code: " + code);
+            }
+            @Override
+            public void onAdLoaded() {
+                AdLog.e("qwqer_ad======插屏广告========onAdLoaded=======");
+                //广告展示需要传入Activity类型
+                interstitialAd.showAd(activity);
+            }
+            @Override
+            public void onAdShown() {
+                AdLog.e("qwqer_ad======插屏广告========onAdShown=======");
+            }
+            @Override
+            public void onAdClosed() {
+                AdLog.e("qwqer_ad======插屏广告========onAdClosed=======");
+                if (null != onAdListener){
+                    onAdListener.onAdDialogClose();
+                }
+                if (null != interstitialAd){
+                    interstitialAd.destroy();
+                }
+            }
+            @Override
+            public void onAdClick() {
+                AdLog.e("qwqer_ad======插屏广告========onClick=======");
+            }
+        }, 5000, 0);
 
-        OSETInsertCache.getInstance()
-                .setOSETListener(new OSETListener() {
-                    @Override
-                    public void onClick() {
-                        AdLog.e("======AdSet插屏广告========onClick=======");
-                    }
-                    @Override
-                    public void onClose() {
-                        AdLog.e("======AdSet插屏广告========onClose=======");
-                        if (null != onAdListener){
-                            onAdListener.onAdDialogClose();
-                        }
-                        //在OnDestroy中调用destroy
-                        OSETInsertCache.getInstance().destroy();
-                    }
-                    @Override
-                    public void onShow() {
-                        AdLog.e("======AdSet插屏广告========onShow=======");
-                        if (null != onAdListener){
-                            onAdListener.onAdDialogShow();
-                        }
-                    }
-                    @Override
-                    public void onError(String s, String s1) {
-                        AdLog.e("======AdSet插屏广告========onError=======s: " + s + "   s1: " + s1);
-                    }
-                })
-                .showAd(activity);
-
+        //广告版本：1表示平台模板；2表示平台模板2.0
+        interstitialAd.setAdVersion(1);
+        //加载广告
+        interstitialAd.loadAd();
     }
 
 
