@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import com.qwqer.adplatform.R;
 import com.qwqer.adplatform.listeners.OnAdListener;
+import com.qwqer.adplatform.utils.AdLog;
+
 /**
  * 开屏广告。
  * @author E
@@ -33,4 +35,15 @@ public class SplashAdActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        AdLog.e("qwqer_ad=====开屏广告========onResume====");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        AdLog.e("qwqer_ad=====开屏广告========onPause====");
+    }
 }

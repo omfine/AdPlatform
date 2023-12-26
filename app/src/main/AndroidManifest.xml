@@ -40,7 +40,7 @@
         android:protectionLevel="signature" />
     <uses-permission android:name="${applicationId}.openadsdk.permission.TT_PANGOLIN" />
 
-    <application
+<!--    <application
         android:name=".application.AdApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -70,9 +70,47 @@
         </activity>
 
 
-        <!-- gdt(广点通渠道广告sdk配置) Ad -->
+        &lt;!&ndash; gdt(广点通渠道广告sdk配置) Ad &ndash;&gt;
 
-        <!--如果targetSdkVersion设置值>=24，则必须添加以下provider，否则会影响app变现效率-->
+        &lt;!&ndash;如果targetSdkVersion设置值>=24，则必须添加以下provider，否则会影响app变现效率&ndash;&gt;
+        &lt;!&ndash;请开发者根据自己PackageName来替换${applicationId}这个字段&ndash;&gt;
+        &lt;!&ndash;特别注意这个authorities中的fileprovider为全部小写&ndash;&gt;
+        <provider
+            android:name="com.qq.e.comm.GDTFileProvider"
+            android:authorities="${applicationId}.gdt.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/gdt_file_path" />
+        </provider>
+
+        &lt;!&ndash; CSJ(穿山甲渠道广告sdk配置) Ad &ndash;&gt;
+        <provider
+            android:name="com.bytedance.sdk.openadsdk.TTFileProvider"
+            android:authorities="${applicationId}.TTFileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <provider
+            android:name="com.bytedance.sdk.openadsdk.multipro.TTMultiProvider"
+            android:authorities="${applicationId}.TTMultiProvider"
+            android:exported="false" />
+
+    </application>-->
+
+    <application>
+        <activity
+            android:name="com.qwqer.adplatform.view.AdWebViewActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.qwqer.adplatform.ad.SplashAdActivity"
+            android:exported="false" />
+
         <!--请开发者根据自己PackageName来替换${applicationId}这个字段-->
         <!--特别注意这个authorities中的fileprovider为全部小写-->
         <provider
@@ -100,10 +138,7 @@
             android:name="com.bytedance.sdk.openadsdk.multipro.TTMultiProvider"
             android:authorities="${applicationId}.TTMultiProvider"
             android:exported="false" />
-
-
     </application>
-
 
 
 </manifest>

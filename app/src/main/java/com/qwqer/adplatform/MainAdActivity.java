@@ -48,7 +48,7 @@ public class MainAdActivity extends AppCompatActivity {
             //banner广告 949191939
             //107EB50EDFE65EA3306C8318FD57D0B3
             //107EB50EDFE65EA3306C8318FD57D0B3
-            bannerAdView.loadAd(2 , 1 , 0 , "103223" , false);
+            bannerAdView.loadAd(2 , 1 , 0 , "103224" , false , true);
         });
 
         setTokenBtn.setOnClickListener(view -> {

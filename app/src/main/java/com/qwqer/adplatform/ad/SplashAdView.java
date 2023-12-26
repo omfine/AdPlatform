@@ -138,10 +138,11 @@ public class SplashAdView extends BaseView {
             }
             @Override
             public void onAdClosed() {
-                AdLog.e("qwqer_ad=====开屏广告========onAdClosed====");
-                if (null != onAdListener){
-                    onAdListener.onJump();
-                }
+                AdLog.e("qwqer_ad=====开屏广告========onAdClosed====canJumpImmediately: " + canJumpImmediately);
+//                if (null != onAdListener){
+//                    onAdListener.onJump();
+//                }
+                jumpWhenCanClick();
             }
             @Override
             public void onAdTick(long l) {
@@ -156,8 +157,42 @@ public class SplashAdView extends BaseView {
         splashAd.loadAd((int) Utils.getScreenWidthDp(context), (int) Utils.getScreenHeightDp(context));
     }
 
+    public boolean canJumpImmediately = false;
 
-/*    private void loadAdsetAds(){
+    private void jumpWhenCanClick(){
+        if (this.canJumpImmediately){
+            //To do something
+            if (null != onAdListener){
+                onAdListener.onJump();
+            }
+        }else {
+            this.canJumpImmediately = true;
+        }
+    }
+
+
+    @Override
+    public void onWindowFocusChanged(boolean hasWindowFocus) {
+        super.onWindowFocusChanged(hasWindowFocus);
+        if (hasWindowFocus){
+            if (this.canJumpImmediately){
+                jumpWhenCanClick();
+            }
+            this.canJumpImmediately = true;
+//            jumpWhenCanClick();
+        }else {
+            this.canJumpImmediately = false;
+        }
+        AdLog.e("qwqer_ad=====开屏广告========onWindowFocusChanged====hasWindowFocus: " + hasWindowFocus);
+    }
+
+    @Override
+    protected void onWindowVisibilityChanged(int visibility) {
+        super.onWindowVisibilityChanged(visibility);
+        AdLog.e("qwqer_ad=====开屏广告========onWindowVisibilityChanged====visibility: " + visibility);
+    }
+
+    /*    private void loadAdsetAds(){
         OSETSplash.getInstance().show((Activity) context, splashAdContainerView, adId, new OSETListener() {
             @Override
             public void onClick() {
