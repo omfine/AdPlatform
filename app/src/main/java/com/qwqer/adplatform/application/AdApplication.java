@@ -12,7 +12,7 @@ public class AdApplication extends Application {
     public void onCreate() {
         super.onCreate();
 //        QwQerAdHelper.init(this , "5001121" , 1);
-        QwQerAdConfig.deBugMode = true;
+        QwQerAdConfig.deBugMode = false;
         //5315280
         //E6097975B89E83D6
         //F3984C8E81F2CF70

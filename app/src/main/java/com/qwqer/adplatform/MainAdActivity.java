@@ -24,7 +24,7 @@ public class MainAdActivity extends AppCompatActivity {
 
     private BannerAdView bannerAdView;
 
-    private String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6InRva2VuIn0.eyJjdXN0b21lclR5cGUiOjIsInBob25lIjoiMTg2ODg3MjAwMzEiLCJhY2NvdW50Tm8iOiJYRDc1MjIwNDIyVk8iLCJjbGllbnRUeXBlRW51bURlc2MiOiJDVVNUT01FUl9BUFAiLCJpZCI6IjQxMyIsInV1aWQiOiIwNDZlZjg5Zi04ZTRmLTQ5MmItYTAyMC04NDdhNjNlODJkMzEiLCJjbGllbnRUeXBlVmFsIjoxLCJpYXQiOjE2NzAyMzU1NzZ9.YC-wDji2kf52kVUG85jMnaLGv1rkxWZKccwuEXiQEy8";
+    private String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6InRva2VuIn0.eyJjdXN0b21lclR5cGUiOjIsInBob25lIjoiMTg2ODg3MjAwMzEiLCJhY2NvdW50Tm8iOiJYRDc1MjIwNDIyVk8iLCJjbGllbnRUeXBlRW51bURlc2MiOiJDVVNUT01FUl9BUFAiLCJpZCI6IjQxMyIsInV1aWQiOiJjOTVjZDMwYy0yNzkxLTQzODItYTFjZi04MTM1OTY5Y2E1YjMiLCJjbGllbnRUeXBlVmFsIjoxLCJpYXQiOjE3MDU0NzQ2NTV9.KEP1BTXgnMDjHzzo3l_bziMMC5qcRAudDwYUSPvrgmY";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

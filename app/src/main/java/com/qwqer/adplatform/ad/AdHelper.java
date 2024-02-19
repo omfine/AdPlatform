@@ -5,6 +5,7 @@ import com.beizi.fusion.InterstitialAd;
 import com.beizi.fusion.InterstitialAdListener;
 import com.qwqer.adplatform.bean.AdvertInfoBean;
 import com.qwqer.adplatform.bean.AdvertInfoResultBean;
+import com.qwqer.adplatform.cache.TempCacheHelper;
 import com.qwqer.adplatform.dialog.SelfInsertScreenAdDialog;
 import com.qwqer.adplatform.listeners.OnAdListener;
 import com.qwqer.adplatform.net.AdNetHelper;
@@ -49,59 +50,74 @@ public class AdHelper {
         if (ActivityUtils.isActivityNotAvailable(activity)){
             return;
         }
+        String key = "insertAd_" + advertPosition + "_" + showFrom + "_" + codeId;
         AdLog.d("===============插屏广告:: " + codeId);
         if (QwQerAdConfig.deBugMode){
             //测试头条广告
             //厂商广告
             showAdSetInsertScreenAd(activity , codeId , onAdListener);
-//            showTouTiaoInsertScreenAd(activity ,  codeId , 300, 450 , onAdListener);
             return;
         }
+        AdvertInfoResultBean cacheData =TempCacheHelper.getInstance().getAdValue(key);
+
 
         AdNetHelper.getInstance().advertInfo(advertPosition , showFrom , new OnRequestCallBackListener<AdvertInfoResultBean>(){
             @Override
             public void onSuccess(AdvertInfoResultBean it) {
-                //是否展示，1-展示，2-不展示
-                int isShow = it.getIsShow();
-                //是不是自营广告，1-是，2-厂商广告
-                int isSelfAdvert = it.getIsSelfAdvert();
-                if (1 != isShow){
-                    return;
-                }
-
-                if (1 == isSelfAdvert){
-                    List<AdvertInfoBean> adverts = it.getAdverts();
-                    if (adverts.isEmpty()){
-                        return;
-                    }
-                    //自己的插屏广告
-                    if (null != selfInsertScreenAdDialog && selfInsertScreenAdDialog.isShowing()){
-                        selfInsertScreenAdDialog.cancel();
-                        selfInsertScreenAdDialog.dismiss();
-                        selfInsertScreenAdDialog = null;
-                    }
-                    if (ActivityUtils.isActivityNotAvailable(activity)){
-                        return;
-                    }
-                    selfInsertScreenAdDialog = new SelfInsertScreenAdDialog(activity , activity);
-                    selfInsertScreenAdDialog.show();
-                    selfInsertScreenAdDialog.setData(adverts);
-                    selfInsertScreenAdDialog.setOnDismissListener(dialogInterface -> {
-                        if (null != onAdListener){
-                            onAdListener.onAdDialogClose();
-                        }
-                    });
-                    if (null != onAdListener){
-                        onAdListener.onAdDialogShow();
-                    }
-                    return;
-                }
-                //厂商广告
-                showAdSetInsertScreenAd(activity , codeId , onAdListener);
-//                showTouTiaoInsertScreenAd(activity ,  codeId , 500, 500 , onAdListener);
+                //获取到数据
+                onGetDataSuccess(activity , it , codeId , onAdListener);
             }
         });
     }
+
+    /**
+     * 获取到数据。
+     * @param activity
+     * @param it
+     * @param codeId
+     * @param onAdListener
+     */
+    private static void onGetDataSuccess(Activity activity, AdvertInfoResultBean it, String codeId, OnAdListener onAdListener){
+        //是否展示，1-展示，2-不展示
+        int isShow = it.getIsShow();
+        //是不是自营广告，1-是，2-厂商广告
+        int isSelfAdvert = it.getIsSelfAdvert();
+        if (1 != isShow){
+            return;
+        }
+
+        if (1 == isSelfAdvert){
+            List<AdvertInfoBean> adverts = it.getAdverts();
+            if (adverts.isEmpty()){
+                return;
+            }
+            //自己的插屏广告
+            if (null != selfInsertScreenAdDialog && selfInsertScreenAdDialog.isShowing()){
+                selfInsertScreenAdDialog.cancel();
+                selfInsertScreenAdDialog.dismiss();
+                selfInsertScreenAdDialog = null;
+            }
+            if (ActivityUtils.isActivityNotAvailable(activity)){
+                return;
+            }
+            selfInsertScreenAdDialog = new SelfInsertScreenAdDialog(activity , activity);
+            selfInsertScreenAdDialog.show();
+            selfInsertScreenAdDialog.setData(adverts);
+            selfInsertScreenAdDialog.setOnDismissListener(dialogInterface -> {
+                if (null != onAdListener){
+                    onAdListener.onAdDialogClose();
+                }
+            });
+            if (null != onAdListener){
+                onAdListener.onAdDialogShow();
+            }
+            return;
+        }
+        //厂商广告
+        showAdSetInsertScreenAd(activity , codeId , onAdListener);
+    }
+
+
 
     private static InterstitialAd interstitialAd = null;
 

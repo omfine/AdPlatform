@@ -8,6 +8,7 @@ import com.beizi.fusion.SplashAd;
 import com.qwqer.adplatform.R;
 import com.qwqer.adplatform.ad.self.SelfSplashAdView;
 import com.qwqer.adplatform.bean.AdvertInfoResultBean;
+import com.qwqer.adplatform.cache.TempCacheHelper;
 import com.qwqer.adplatform.listeners.OnAdListener;
 import com.qwqer.adplatform.net.AdNetHelper;
 import com.qwqer.adplatform.net.base.OnRequestCallBackListener;
@@ -54,14 +55,20 @@ public class SplashAdView extends BaseView {
      */
     public void loadAd(int advertPosition , int showFrom , String codeId , OnAdListener onAdListener){
         this.onAdListener = onAdListener;
+        String key = "splashAd_" + advertPosition + "_" + showFrom + "_" + codeId;
         if (QwQerAdConfig.deBugMode){
             //如果是测试，直接用头条广告
             //头条广告
-//            loadSplashAd(codeId);
             showAdSetSplashAd(codeId);
             return;
         }
-
+        //判断是否有未过期的缓存数据
+        AdvertInfoResultBean cacheData = TempCacheHelper.getInstance().getAdValue(key);
+        if (null != cacheData){
+            onGetDataSuccess(cacheData , codeId , onAdListener);
+            return;
+        }
+        //重新请求数据
         AdNetHelper.getInstance().advertInfoSplash(advertPosition, showFrom , new OnRequestCallBackListener<AdvertInfoResultBean>(){
             @Override
             public void onFailed(int errorCode, String errorMsg) {
@@ -71,37 +78,50 @@ public class SplashAdView extends BaseView {
             }
             @Override
             public void onSuccess(AdvertInfoResultBean it) {
-                //是否展示，1-展示，2-不展示
-                int isShow = it.getIsShow();
-                //是不是自营广告，1-是，2-厂商广告
-                int isSelfAdvert = it.getIsSelfAdvert();
-                if (1 != isShow){
-                    if (null != onAdListener){
-                        onAdListener.onJump();
-                    }
-                    return;
-                }
-
-                if (ActivityUtils.isActivityNotAvailable(context)){
-                    return;
-                }
-
-                if (1 == isSelfAdvert){
-                    //自营广告
-                    SelfSplashAdView selfSplashAdView = new SelfSplashAdView(context);
-                    selfSplashAdView.setOnAdListener(onAdListener);
-                    selfSplashAdView.setData(it);
-
-                    splashAdContainerView.removeAllViews();
-                    splashAdContainerView.addView(selfSplashAdView);
-                    return;
-                }
-                //头条广告
-                showAdSetSplashAd(codeId);
-//                loadSplashAd(codeId);
+                //获取数据成功
+                onGetDataSuccess(it , codeId , onAdListener);
+                //缓存数据
+                TempCacheHelper.getInstance().save(key , it);
             }
         });
     }
+
+    /**
+     * 获取数据成功
+     * @param it
+     * @param codeId
+     * @param onAdListener
+     */
+    private void onGetDataSuccess(AdvertInfoResultBean it , String codeId , OnAdListener onAdListener){
+        //是否展示，1-展示，2-不展示
+        int isShow = it.getIsShow();
+        //是不是自营广告，1-是，2-厂商广告
+        int isSelfAdvert = it.getIsSelfAdvert();
+        if (1 != isShow){
+            if (null != onAdListener){
+                onAdListener.onJump();
+            }
+            return;
+        }
+
+        if (ActivityUtils.isActivityNotAvailable(context)){
+            return;
+        }
+
+        if (1 == isSelfAdvert){
+            //自营广告
+            SelfSplashAdView selfSplashAdView = new SelfSplashAdView(context);
+            selfSplashAdView.setOnAdListener(onAdListener);
+            selfSplashAdView.setData(it);
+
+            splashAdContainerView.removeAllViews();
+            splashAdContainerView.addView(selfSplashAdView);
+            return;
+        }
+        //头条广告
+        showAdSetSplashAd(codeId);
+    }
+
 
     /**
      * 显示AdSet的开屏广告.

@@ -28,7 +28,7 @@ public class AdNetHelper extends RetrofitHelper {
      * @param advertInfoRequestBean
      * @param onRequestCallBackListener
      */
-    public void advertInfo(AdvertInfoRequestBean advertInfoRequestBean , OnRequestCallBackListener<AdvertInfoResultBean> onRequestCallBackListener){
+    private void advertInfo(AdvertInfoRequestBean advertInfoRequestBean , OnRequestCallBackListener<AdvertInfoResultBean> onRequestCallBackListener){
         if (QwQerAdConfig.appType == 1){
             //用户端
             requestCallback(serverRequestInterface.advertInfoUser(advertInfoRequestBean), onRequestCallBackListener);
@@ -43,7 +43,7 @@ public class AdNetHelper extends RetrofitHelper {
      * @param advertInfoRequestBean
      * @param onRequestCallBackListener
      */
-    public void advertInfoSplash(AdvertInfoRequestBean advertInfoRequestBean , OnRequestCallBackListener<AdvertInfoResultBean> onRequestCallBackListener){
+    private void advertInfoSplash(AdvertInfoRequestBean advertInfoRequestBean , OnRequestCallBackListener<AdvertInfoResultBean> onRequestCallBackListener){
         if (QwQerAdConfig.appType == 1){
             //用户端
             requestCallback(serverRequestInterface.advertInfoSplashUser(advertInfoRequestBean), onRequestCallBackListener);

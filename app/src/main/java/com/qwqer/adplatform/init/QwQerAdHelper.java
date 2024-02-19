@@ -49,6 +49,21 @@ public class QwQerAdHelper {
     }
 
     /**
+     * 接入网盟广告sdk的初始化操作，详情见接入文档和穿山甲平台说明
+     * @param context
+     * @param appId
+     * @param appType 1，用户端 2，配送端
+     */
+    public static void init(Application context , String appId , int appType , String clientFlag , long expiredIntervalSeconds) {
+        mContext = context;
+        mClientFlag = clientFlag;
+        QwQerAdConfig.appType = appType;
+        QwQerAdConfig.expiredIntervalSeconds = expiredIntervalSeconds;
+
+        initAdSet(context , appId);
+    }
+
+    /**
      * appkey：E6097975B89E83D6
      * @param context
      */

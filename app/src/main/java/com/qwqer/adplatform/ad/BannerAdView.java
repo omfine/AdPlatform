@@ -14,6 +14,7 @@ import com.beizi.fusion.NativeAdListener;
 import com.qwqer.adplatform.R;
 import com.qwqer.adplatform.ad.self.SelfBannerAdView;
 import com.qwqer.adplatform.bean.AdvertInfoResultBean;
+import com.qwqer.adplatform.cache.TempCacheHelper;
 import com.qwqer.adplatform.listeners.OnAdListener;
 import com.qwqer.adplatform.net.AdNetHelper;
 import com.qwqer.adplatform.net.base.OnRequestCallBackListener;
@@ -103,12 +104,20 @@ public class BannerAdView extends BaseView {
      * @param canClose 自营广告是否可以关闭
      */
     private void loadAds(int advertPosition , int showFrom , int imageCorner , String codeId, boolean canClose , boolean nativeAd){
+        String key = "banner_" + advertPosition + "_" + showFrom + "_" + codeId;
         if (QwQerAdConfig.deBugMode){
             //测试用头条广告
             showAd(codeId , nativeAd);
             return;
         }
-
+        //判断是否有未过期的缓存数据，有的话，用缓存数据
+        AdvertInfoResultBean cacheData = TempCacheHelper.getInstance().getAdValue(key);
+        if (null != cacheData){
+            //使用缓存数据
+            onGetDataSuccess(cacheData , codeId , canClose , nativeAd);
+            return;
+        }
+        //通过接口去获取新数据
         AdNetHelper.getInstance().advertInfo(advertPosition , showFrom , new OnRequestCallBackListener<AdvertInfoResultBean>(){
             @Override
             public void onFailed(int errorCode, String errorMsg) {
@@ -117,38 +126,52 @@ public class BannerAdView extends BaseView {
 
             @Override
             public void onSuccess(AdvertInfoResultBean it) {
-                //是否展示，1-展示，2-不展示
-                int isShow = it.getIsShow();
-                //是不是自营广告，1-是，2-厂商广告
-                int isSelfAdvert = it.getIsSelfAdvert();
-                if (1 != isShow){
-                    setVisibility(View.GONE);
-                    return;
-                }
-
-                if (ActivityUtils.isActivityNotAvailable(context)){
-                    return;
-                }
-                if (1 == isSelfAdvert){
-                    //自营广告
-                    SelfBannerAdView selfBannerAdView = new SelfBannerAdView(context);
-                    selfBannerAdView.setData(it , canClose);
-                    selfBannerAdView.setOnAdListener(new OnAdListener(){
-                        @Override
-                        public void onBannerClose() {
-                            setVisibility(View.GONE);
-                        }
-                    });
-
-                    setVisibility(View.VISIBLE);
-                    bannerAdContainerView.removeAllViews();
-                    bannerAdContainerView.addView(selfBannerAdView);
-                    return;
-                }
-                //显示第三方广告平台的广告
-                showAd(codeId , nativeAd);
+                //获取数据成功
+                onGetDataSuccess(it , codeId , canClose , nativeAd);
+                //缓存数据
+                TempCacheHelper.getInstance().save(key , it);
             }
         });
+    }
+
+    /**
+     * 获取数据成功
+     * @param it
+     * @param codeId
+     * @param canClose
+     * @param nativeAd
+     */
+    private void onGetDataSuccess(AdvertInfoResultBean it , String codeId, boolean canClose , boolean nativeAd){
+        //是否展示，1-展示，2-不展示
+        int isShow = it.getIsShow();
+        //是不是自营广告，1-是，2-厂商广告
+        int isSelfAdvert = it.getIsSelfAdvert();
+        if (1 != isShow){
+            setVisibility(View.GONE);
+            return;
+        }
+
+        if (ActivityUtils.isActivityNotAvailable(context)){
+            return;
+        }
+        if (1 == isSelfAdvert){
+            //自营广告
+            SelfBannerAdView selfBannerAdView = new SelfBannerAdView(context);
+            selfBannerAdView.setData(it , canClose);
+            selfBannerAdView.setOnAdListener(new OnAdListener(){
+                @Override
+                public void onBannerClose() {
+                    setVisibility(View.GONE);
+                }
+            });
+
+            setVisibility(View.VISIBLE);
+            bannerAdContainerView.removeAllViews();
+            bannerAdContainerView.addView(selfBannerAdView);
+            return;
+        }
+        //显示第三方广告平台的广告
+        showAd(codeId , nativeAd);
     }
 
     /**
@@ -266,7 +289,8 @@ public class BannerAdView extends BaseView {
 //        mAdWidth = (int) Utils.getScreenWidthDp(context);
         mAdWidth = Utils.px2dip(context , this.measuredWidth);
 //        mAdHeight = Utils.dip2px(context , 60);
-        mAdHeight = this.measuredHeight;
+//        mAdHeight = this.measuredHeight;
+        mAdHeight = AdUtils.px2dip(context , this.measuredHeight);
         AdLog.e("qwqer_ad============NativeAd=====开始加载===========mAdHeight: " + mAdHeight   + "    mAdWidth:: " + mAdWidth);
         /**
          * 广告加载
