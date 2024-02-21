@@ -58,14 +58,21 @@ public class AdHelper {
             showAdSetInsertScreenAd(activity , codeId , onAdListener);
             return;
         }
+        //判断是否有未过期的缓存数据，有的话，用缓存数据
         AdvertInfoResultBean cacheData =TempCacheHelper.getInstance().getAdValue(key);
-
-
+        if (null != cacheData){
+            //使用缓存数据
+            onGetDataSuccess(activity , cacheData , codeId , onAdListener);
+            return;
+        }
+        //通过接口去获取新数据
         AdNetHelper.getInstance().advertInfo(advertPosition , showFrom , new OnRequestCallBackListener<AdvertInfoResultBean>(){
             @Override
             public void onSuccess(AdvertInfoResultBean it) {
                 //获取到数据
                 onGetDataSuccess(activity , it , codeId , onAdListener);
+                //缓存数据
+                TempCacheHelper.getInstance().save(key , it);
             }
         });
     }
